@@ -1,11 +1,16 @@
 package part2;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import java.io.File;
+import javax.imageio.ImageIO;
+//import  java.awt.image.BufferedImage;
 
 public class Client implements Runnable {
 
@@ -15,6 +20,8 @@ public class Client implements Runnable {
 
     private String routerIP;
     private String routerPort;
+
+  //  private String imagePath;
 
     public String getServerName() {
         return serverName;
@@ -84,10 +91,35 @@ public class Client implements Runnable {
 
     private void doClientOperation() {
         try {
+            //get user input of what data the client wants from server and set to dataType
+            String dataType = "";
+            //**I dont know how to comunicate with the specific server with that data type
             Socket socket = new Socket(routerIP, Integer.parseInt(routerPort));
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
             //TODO Talk to client
+
+            switch(dataType){ // receive and save whatever type of data you requested
+                case "image"://reading and saving image file
+                {
+                    BufferedImage image = ImageIO.read(socket.getInputStream());
+                    File outputFile = new File("receivedImage.jpg");
+                    ImageIO.write(image, ".jpg", outputFile);
+                }
+                    break;
+                case "text"://reading and saving txt file
+                {
+
+                }
+                    break;
+                case "audio"://reading and saving audio file
+                {
+
+                }
+                    break;
+            }
+
             socket.close();
         } catch (UnknownHostException e) {
             System.err.println("Don't know about router: " + routerIP + ":" + routerPort);
