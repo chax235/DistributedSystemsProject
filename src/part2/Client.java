@@ -88,6 +88,12 @@ public class Client implements Runnable {
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             //TODO Talk to client
+            //========================================================
+             BufferedImage image = Image.IO.read(socket.getInputStream());
+
+            File outputFile = new File("recievedImage.jpg");
+            ImageIO.write(image, ".jpg", outputFile);
+            //=========================================================
             socket.close();
         } catch (UnknownHostException e) {
             System.err.println("Don't know about router: " + routerIP + ":" + routerPort);
