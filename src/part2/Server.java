@@ -13,6 +13,8 @@ public class Server implements Runnable {
 
     private String routerIP;
     private String routerPort;
+    
+     private String imagePath; //path to jpg image file to send
 
     @Override
     public void run() {
@@ -74,6 +76,20 @@ public class Server implements Runnable {
 
     private void acceptClientCommunication() {
         //TODO Logic for the server actually accepting client connections and doing stuff goes here
+        //===========================================================
+            File path = new File(imagePath);
+        BufferedImage image = ImageIO.read(path);
+        try (ServerSocket serv = new ServerSocket(getPort())) {
+            System.out.println("waiting...");
+            try (Socket socket = serv.accept()) {
+                System.out.println("client connected");
+                ImageIO.write(image, "jpg", socket.OutputStream());
+                System.out.println("sent");
+            }
+        }
+                socket.close;
+        //===========================================================
+        
     }
 
     public static void main(String[] args) throws IOException {
